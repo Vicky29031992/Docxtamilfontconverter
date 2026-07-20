@@ -4,6 +4,7 @@ Files and folders:
 - app.py
 - templates\index.html
 - mappings\*.js
+- output_docs\
 - requirements.txt
 
 How to use:
