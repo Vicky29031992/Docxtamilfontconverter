@@ -5,6 +5,7 @@ import shutil
 import zipfile
 import tempfile
 import webbrowser
+import time
 from copy import deepcopy
 from functools import lru_cache
 from pathlib import Path
@@ -13,12 +14,17 @@ from threading import Timer
 from lxml import etree as ET
 
 from flask import Flask, render_template, request, jsonify, send_file
+from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 
 BASE_DIR = Path(__file__).resolve().parent
 MAPPINGS_DIR = BASE_DIR / "mappings"
 OUTPUT_DIR = BASE_DIR / "output_docs"
 OUTPUT_DIR.mkdir(exist_ok=True)
+
+# Directory to store user uploaded files
+UPLOADS_DIR = BASE_DIR / "uploads"
+UPLOADS_DIR.mkdir(exist_ok=True)
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -1237,6 +1243,9 @@ class TamilDocxConverter:
         src_tag = safe_filename_part(source_encoding)
         dst_tag = safe_filename_part(target_encoding)
         output_name = f"{Path(input_name).stem}_{src_tag}_to_{dst_tag}.docx"
+        
+        # Read uploaded file bytes
+        file_storage.seek(0)
         input_bytes = file_storage.read()
 
         try:
@@ -1374,11 +1383,19 @@ def convert_api():
         return jsonify({"ok": False, "error": "Source and target must be different"}), 400
 
     try:
+        # Save the raw uploaded file with a timestamp to avoid overwrite collisions
+        timestamp = int(time.time())
+        clean_name = secure_filename(file.filename) or "document.docx"
+        saved_upload_path = UPLOADS_DIR / f"{timestamp}_{clean_name}"
+        file.save(saved_upload_path)
+
+        # Process conversion
         out_path, paragraphs, chars, runs, pipeline = converter.convert_docx(file, source_font, target_font)
 
         return jsonify({
             "ok": True,
             "filename": out_path.name,
+            "uploaded_as": saved_upload_path.name,
             "paragraphs": paragraphs,
             "chars": chars,
             "runs": runs,
