@@ -4,9 +4,6 @@ Files and folders:
 - app.py
 - templates\index.html
 - mappings\*.js
-- fonts\
-- output_docs\
-- run_converter.bat
 - requirements.txt
 
 How to use:
