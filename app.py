@@ -1369,6 +1369,28 @@ def debug_mappings():
     })
 
 
+@app.get("/api/files")
+def list_files():
+    """Lists uploaded files and converted output files."""
+    def get_file_info(directory, route_prefix):
+        files = []
+        for path in sorted(directory.glob("*.docx"), key=os.path.getmtime, reverse=True):
+            stat = path.stat()
+            files.append({
+                "filename": path.name,
+                "size_kb": round(stat.st_size / 1024, 2),
+                "modified": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(stat.st_mtime)),
+                "download_url": f"/{route_prefix}/{path.name}"
+            })
+        return files
+
+    return jsonify({
+        "ok": True,
+        "uploads": get_file_info(UPLOADS_DIR, "download/upload"),
+        "converted": get_file_info(OUTPUT_DIR, "download/converted")
+    })
+
+
 @app.post("/api/convert")
 def convert_api():
     file = request.files.get("docx")
@@ -1399,7 +1421,8 @@ def convert_api():
             "paragraphs": paragraphs,
             "chars": chars,
             "runs": runs,
-            "download": f"/download/{out_path.name}",
+            "download": f"/download/converted/{out_path.name}",
+            "upload_download": f"/download/upload/{saved_upload_path.name}",
             "pipeline": [
                 {"source": s, "target": t, "file": m["file"], "kind": m["kind"]}
                 for s, t, m in pipeline
@@ -1412,8 +1435,14 @@ def convert_api():
 
 
 @app.get("/download/<filename>")
-def download(filename):
+@app.get("/download/converted/<filename>")
+def download_converted(filename):
     return send_file(OUTPUT_DIR / filename, as_attachment=True, download_name=filename)
+
+
+@app.get("/download/upload/<filename>")
+def download_upload(filename):
+    return send_file(UPLOADS_DIR / filename, as_attachment=True, download_name=filename)
 
 
 def open_browser():
@@ -1426,6 +1455,7 @@ if __name__ == "__main__":
     print(f"Mappings: {MAPPINGS_DIR}")
     print("Open: http://127.0.0.1:5000")
     print("Mode: build mappings from *_to_unicode.js, convert legacy↔unicode and legacy↔legacy via Unicode pivot")
-    print("Debug mappings: http://127.0.0.1:5000/api/debug/mappings\n")
+    print("Debug mappings: http://127.0.0.1:5000/api/debug/mappings")
+    print("View all files: http://127.0.0.1:5000/api/files\n")
     Timer(1.2, open_browser).start()
     app.run(host="127.0.0.1", port=5000, debug=False)
