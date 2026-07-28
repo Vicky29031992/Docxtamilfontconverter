@@ -1444,6 +1444,14 @@ def download_converted(filename):
 def download_upload(filename):
     return send_file(UPLOADS_DIR / filename, as_attachment=True, download_name=filename)
 
+@app.route('/git_update", methods=['POST'])
+def git_update():
+    repo = git.Repo('./Docxtamilfontconverter')
+    origin = repo.remotes.origin
+    repo.create_head('main',
+    origin.refs.main).set_tracking_brach(orgin.refs.main).checkout()
+    origin.pull()
+    return '',200
 
 def open_browser():
     webbrowser.open("http://127.0.0.1:5000")
