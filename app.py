@@ -1444,15 +1444,26 @@ def download_converted(filename):
 def download_upload(filename):
     return send_file(UPLOADS_DIR / filename, as_attachment=True, download_name=filename)
 
-@app.route('/git_update", methods=['POST'])
-def git_update():
-    repo = git.Repo('./Docxtamilfontconverter')
-    origin = repo.remotes.origin
-    repo.create_head('main',
-    origin.refs.main).set_tracking_brach(orgin.refs.main).checkout()
-    origin.pull()
-    return '',200
+from flask import Flask, request
+import git
 
+app = Flask(__name__)
+
+
+@app.route("/git_update", methods=["POST"])
+def git_update():
+  try:
+    repo = git.Repo("./Docxtamilfontconverter")
+    origin = repo.remotes.origin
+    # Corrected branch tracking and checkout syntax
+    repo.create_head("main", origin.refs.main).set_tracking_branch(
+        origin.refs.main
+    ).checkout()
+    origin.pull()
+    return "", 200
+  except Exception as e:
+    return str(e), 500
+      
 def open_browser():
     webbrowser.open("http://127.0.0.1:5000")
 
