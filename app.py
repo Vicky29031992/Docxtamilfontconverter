@@ -18,13 +18,15 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 
 BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR / "data"
 MAPPINGS_DIR = BASE_DIR / "mappings"
-OUTPUT_DIR = BASE_DIR / "output_docs"
-OUTPUT_DIR.mkdir(exist_ok=True)
+
+OUTPUT_DIR = DATA_DIR / "output_docs"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Directory to store user uploaded files
-UPLOADS_DIR = BASE_DIR / "uploads"
-UPLOADS_DIR.mkdir(exist_ok=True)
+UPLOADS_DIR = DATA_DIR / "uploads"
+UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -66,7 +68,7 @@ DEFAULT_FONT_CONFIG = {
     },
     "divya": {
         "doc_font": "divya",
-        "aliases": ["divya"]
+        "aliases": ["divya", "divya"]
     }
 }
 
@@ -1443,7 +1445,8 @@ def download_converted(filename):
 @app.get("/download/upload/<filename>")
 def download_upload(filename):
     return send_file(UPLOADS_DIR / filename, as_attachment=True, download_name=filename)
-      
+
+
 def open_browser():
     webbrowser.open("http://127.0.0.1:5000")
 
