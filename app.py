@@ -18,15 +18,13 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data"
 MAPPINGS_DIR = BASE_DIR / "mappings"
-
-OUTPUT_DIR = DATA_DIR / "output_docs"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR = BASE_DIR / "output_docs"
+OUTPUT_DIR.mkdir(exist_ok=True)
 
 # Directory to store user uploaded files
-UPLOADS_DIR = DATA_DIR / "uploads"
-UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+UPLOADS_DIR = BASE_DIR / "uploads"
+UPLOADS_DIR.mkdir(exist_ok=True)
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -68,7 +66,7 @@ DEFAULT_FONT_CONFIG = {
     },
     "divya": {
         "doc_font": "divya",
-        "aliases": ["divya", "divya"]
+        "aliases": ["divya"]
     }
 }
 
@@ -1460,4 +1458,4 @@ if __name__ == "__main__":
     print("Debug mappings: http://127.0.0.1:5000/api/debug/mappings")
     print("View all files: http://127.0.0.1:5000/api/files\n")
     Timer(1.2, open_browser).start()
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="127.0.0.1", port=5000, debug=False)
