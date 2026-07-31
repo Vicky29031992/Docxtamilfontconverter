@@ -5,39 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tamil DOCX Font Converter</title>
   <style>
-    :root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#d7ddea;--primary:#0b63f6;--primary-2:#0a54cf;--soft:#eef4ff;--ok:#0f9d58;--err:#c62828;--shadow:0 14px 40px rgba(9,30,66,.08)}
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#f6f9ff,#f4f6fb);color:var(--text)}
-    .page{max-width:980px;margin:32px auto;padding:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
-    .head{padding:24px 24px 12px;background:linear-gradient(180deg,#ffffff,#f9fbff)} h1{margin:0 0 8px;font-size:30px} .sub{margin:0;color:var(--muted);max-width:72ch;line-height:1.55}
-    .body{padding:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.row{display:grid;gap:8px}.full{grid-column:1/-1}
-    label{font-weight:700;font-size:14px} input[type=file],select,button{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);font-size:16px;background:#fff}
-    button{background:linear-gradient(180deg,var(--primary),var(--primary-2));color:#fff;border:none;font-weight:700;cursor:pointer} button:disabled{opacity:.6;cursor:not-allowed}
-    .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 0}.tile{background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:14px}
-    .tile b{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}.tile span{font-size:15px}
-    /* Make long file names wrap and avoid overflow */
-    #fileName{
-      display:block;
-      word-break:break-all;
-      overflow-wrap:break-word;
-      max-width:100%;
+    :root{
+      --bg:#f5f7fb;
+      --card:#fff;
+      --text:#172033;
+      --muted:#667085;
+      --line:#d7ddea;
+      --primary:#0b63f6;
+      --primary-2:#0a54cf;
+      --soft:#eef4ff;
+      --ok:#0f9d58;
+      --err:#c62828;
+      --shadow:0 14px 40px rgba(9,30,66,.08)
     }
-
-    .progressBox{margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#fafcff}
-    .bar{height:18px;background:#e8eefb;border-radius:999px;overflow:hidden;margin:10px 0 6px}.fill{height:100%;width:0;background:linear-gradient(90deg,#0b63f6,#5d92ff)} .muted{color:var(--muted)}
-    .status{font-weight:700}.ok{color:var(--ok)} .err{color:var(--err)} .pairList{margin-top:18px;border:1px solid var(--line);border-radius:14px;overflow:auto;max-height:260px}
-    table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px 12px;border-bottom:1px solid #edf1f7;text-align:left} th{position:sticky;top:0;background:#f9fbff}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}.actions a{display:none;text-decoration:none;padding:12px 16px;border-radius:12px;background:#0f9d58;color:#fff;font-weight:700}
-    .dropzone{display:grid;place-items:center;min-height:150px;padding:20px;border:2px dashed #b7c7ea;border-radius:16px;background:linear-gradient(180deg,#fbfdff,#f4f8ff);text-align:center;transition:border-color .2s ease,background .2s ease,transform .2s ease}
-    .dropzone:hover{border-color:#7ea1e8;background:#f7faff}.dropzone.dragover{border-color:var(--primary);background:#eef4ff;transform:translateY(-1px)}
-    .dropzone strong{display:block;font-size:18px;margin-bottom:6px;word-break:break-all;overflow-wrap:break-word;max-width:100%}
-    .dropzone .hint{color:var(--muted);font-size:14px;line-height:1.5}.dropzone .small{margin-top:8px;font-size:13px;color:var(--muted)}
-    .filePicker{margin-top:14px}
-    .note{margin-top:14px;padding:12px 14px;background:var(--soft);border:1px solid #d8e6ff;border-radius:12px;font-size:14px;line-height:1.5}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,#f6f9ff,#f4f6fb);
+      color:var(--text);
+    }
+    .page{
+      max-width:980px;
+      margin:32px auto;
+      padding:16px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .head{
+      padding:24px 24px 12px;
+      background:linear-gradient(180deg,#ffffff,#f9fbff);
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:30px;
+    }
+    .body{
+      padding:24px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .row{
+      display:grid;
+      gap:8px;
+    }
+    .full{
+      grid-column:1/-1;
+    }
+    label{
+      font-weight:700;
+      font-size:14px;
+    }
+    input[type=file],select,button{
+      width:100%;
+      padding:13px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      font-size:16px;
+      background:#fff;
+    }
+    select{
+      cursor:pointer;
+    }
+    button{
+      background:linear-gradient(180deg,var(--primary),var(--primary-2));
+      color:#fff;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+    }
+    button:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+    .meta{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin:16px 0 0;
+    }
+    .tile{
+      background:#fbfcff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      min-width:0;
+    }
+    .tile b{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .tile span,
+    .fileValue{
+      display:block;
+      font-size:15px;
+      line-height:1.45;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+      white-space:normal;
+    }
+    .progressBox{
+      margin-top:18px;
+      padding:16px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fafcff;
+    }
+    .bar{
+      height:18px;
+      background:#e8eefb;
+      border-radius:999px;
+      overflow:hidden;
+      margin:10px 0 6px;
+    }
+    .fill{
+      height:100%;
+      width:0;
+      background:linear-gradient(90deg,#0b63f6,#5d92ff);
+    }
+    .muted{
+      color:var(--muted);
+    }
+    .status{
+      font-weight:700;
+    }
+    .ok{color:var(--ok)}
+    .err{color:var(--err)}
+    .pairList{
+      margin-top:18px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:auto;
+      max-height:260px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+    }
+    th,td{
+      padding:10px 12px;
+      border-bottom:1px solid #edf1f7;
+      text-align:left;
+    }
+    th{
+      position:sticky;
+      top:0;
+      background:#f9fbff;
+    }
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .actions a{
+      display:none;
+      text-decoration:none;
+      padding:12px 16px;
+      border-radius:12px;
+      background:#0f9d58;
+      color:#fff;
+      font-weight:700;
+    }
+    .dropzone{
+      display:grid;
+      place-items:center;
+      min-height:150px;
+      padding:20px;
+      border:2px dashed #b7c7ea;
+      border-radius:16px;
+      background:linear-gradient(180deg,#fbfdff,#f4f8ff);
+      text-align:center;
+      transition:border-color .2s ease,background .2s ease,transform .2s ease;
+    }
+    .dropzone:hover{
+      border-color:#7ea1e8;
+      background:#f7faff;
+    }
+    .dropzone.dragover{
+      border-color:var(--primary);
+      background:#eef4ff;
+      transform:translateY(-1px);
+    }
+    .dropzone strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:6px;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
+    .dropzone .hint{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+    .dropzone .small{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .filePicker{
+      margin-top:14px;
+    }
     @media (max-width:760px){
-      .grid,.meta{grid-template-columns:1fr}
-      h1{font-size:25px}
-      .page{margin:12px auto}
-      .dropzone{min-height:132px;padding:16px}
+      .grid,.meta{
+        grid-template-columns:1fr;
+      }
+      h1{
+        font-size:25px;
+      }
+      .page{
+        margin:12px auto;
+      }
+      .dropzone{
+        min-height:132px;
+        padding:16px;
+      }
+      .tile span,
+      .fileValue{
+        font-size:14px;
+      }
     }
   </style>
 </head>
@@ -60,24 +258,43 @@
             </div>
             <input id="docxFile" class="filePicker" type="file" accept=".docx">
           </div>
+
           <div class="row">
             <label for="sourceFont">Source Tamil font</label>
             <select id="sourceFont">
-              {% for font in fonts %}<option value="{{ font }}">{{ font }}</option>{% endfor %}
+              {% for font in fonts %}
+              <option value="{{ font }}" {% if font == 'unicode' %}selected{% endif %}>{{ font }}</option>
+              {% endfor %}
             </select>
           </div>
+
           <div class="row">
             <label for="targetFont">Target Tamil font</label>
             <select id="targetFont">
-              {% for font in fonts %}<option value="{{ font }}">{{ font }}</option>{% endfor %}
+              {% for font in fonts %}
+              <option value="{{ font }}" {% if font == 'bamini' %}selected{% endif %}>{{ font }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
 
         <div class="meta">
-          <div class="tile"><b>Chosen file</b><span id="fileName">None</span></div>
-          <div class="tile"><b>Total mappings</b><span id="mapCount">{{ mapping_count }}</span></div>
-          <div class="tile"><b>Status</b><span id="statusLabel">Waiting</span></div>
+          <div class="tile">
+            <b>Chosen file</b>
+            <span id="fileName" class="fileValue">None</span>
+          </div>
+          <div class="tile">
+            <b>File size</b>
+            <span id="fileSize">-</span>
+          </div>
+          <div class="tile">
+            <b>Total mappings</b>
+            <span id="mapCount">{{ mapping_count }}</span>
+          </div>
+          <div class="tile">
+            <b>Status</b>
+            <span id="statusLabel">Waiting</span>
+          </div>
         </div>
 
         <div class="actions">
@@ -93,7 +310,9 @@
 
         <div class="pairList">
           <table>
-            <thead><tr><th>Source</th><th>Target</th><th>Entries</th></tr></thead>
+            <thead>
+              <tr><th>Source</th><th>Target</th><th>Entries</th></tr>
+            </thead>
             <tbody id="pairBody">
               {% for p in pairs %}
               <tr><td>{{ p.source }}</td><td>{{ p.target }}</td><td>{{ p.count }}</td></tr>
@@ -110,6 +329,7 @@ const docxFile = document.getElementById('docxFile');
 const sourceFont = document.getElementById('sourceFont');
 const targetFont = document.getElementById('targetFont');
 const fileName = document.getElementById('fileName');
+const fileSize = document.getElementById('fileSize');
 const mapCount = document.getElementById('mapCount');
 const statusLabel = document.getElementById('statusLabel');
 const statusText = document.getElementById('statusText');
@@ -130,9 +350,17 @@ function setProgress(p, label, more, klass=''){
   detail.textContent = more;
 }
 
+function formatFileSize(bytes){
+  if(bytes === 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return (bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 2) + ' ' + units[i];
+}
+
 function updateSelectedFile(){
   const f = docxFile.files[0];
   fileName.textContent = f ? f.name : 'None';
+  fileSize.textContent = f ? formatFileSize(f.size) : '-';
   dropzone.querySelector('strong').textContent = f ? `Selected: ${f.name}` : 'Drag and drop DOCX here';
 }
 
@@ -189,18 +417,8 @@ async function loadMeta(){
     if(fonts.includes(current)) sel.value = current;
   }
 
-  // Default source = unicode, target = bamini
-  if(fonts.includes('unicode')) {
-    sourceFont.value = 'unicode';
-  }
-  if(fonts.includes('bamini')) {
-    targetFont.value = 'bamini';
-  }
-}
-
-// precise timing helper
-function formatSeconds(sec){
-  return sec.toFixed(2);
+  if(fonts.includes('unicode')) sourceFont.value = 'unicode';
+  if(fonts.includes('bamini')) targetFont.value = 'bamini';
 }
 
 convertBtn.addEventListener('click', async ()=>{
@@ -220,10 +438,9 @@ convertBtn.addEventListener('click', async ()=>{
 
   convertBtn.disabled = true;
   downloadBtn.style.display = 'none';
-  setProgress(15, 'Uploading', 'Sending document to local converter.');
 
-  // start high‑precision timer at click
-  const start = performance.now();
+  const startTime = performance.now();
+  setProgress(15, 'Uploading', 'Sending document to local converter.');
 
   try{
     const fakeSteps = [35, 55, 75];
@@ -237,18 +454,19 @@ convertBtn.addEventListener('click', async ()=>{
 
     const res = await fetch('/api/convert', {method:'POST', body:fd});
     clearInterval(ticker);
+
     const data = await res.json();
     if(!res.ok || !data.ok) throw new Error(data.error || 'Conversion failed');
 
-    const end = performance.now();
-    const elapsedSeconds = (end - start) / 1000;
+    const elapsedSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
     setProgress(
       100,
       'Completed',
-      `${data.runs} run(s) converted in ${formatSeconds(elapsedSeconds)}(s), ${data.chars} character(s) processed.`,
+      `${data.runs} run(s) converted in ${elapsedSeconds}(s), ${data.chars} character(s) processed.`,
       'ok'
     );
+
     downloadBtn.href = data.download;
     downloadBtn.style.display = 'inline-block';
   }catch(err){
