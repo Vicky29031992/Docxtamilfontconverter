@@ -5,347 +5,574 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tamil DOCX Font Converter</title>
 
-<!-- Inter font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
---bg:#f5f7fb;
---card:#fff;
---text:#172033;
---muted:#667085;
---line:#d7ddea;
---primary:#0b63f6;
---primary-2:#0a54cf;
---soft:#eef4ff;
---ok:#0f9d58;
---err:#c62828;
---shadow:0 14px 40px rgba(9,30,66,.08)
+    --bg:#f5f7fb;
+    --card:#fff;
+    --text:#172033;
+    --muted:#667085;
+    --line:#d7ddea;
+
+    --primary:#0b63f6;
+    --primary-2:#0a54cf;
+
+    --choose-1:#8b5cf6;
+    --choose-2:#6d28d9;
+
+    --ok:#0f9d58;
+    --err:#c62828;
+    --shadow:0 14px 40px rgba(9,30,66,.08);
+
+    /* Choose File button is slightly shorter */
+    --choose-width:125px;
+    --action-height:44px;
 }
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
+
 body{
-margin:0;
-font-family: "Inter", Arial, Helvetica, sans-serif;
-background:linear-gradient(180deg,#f6f9ff,#f4f6fb);
-color:var(--text);
+    margin:0;
+    font-family:"Inter", Arial, Helvetica, sans-serif;
+    background:linear-gradient(180deg,#f6f9ff,#f4f6fb);
+    color:var(--text);
 }
+
 .page{
-max-width:980px;
-margin:32px auto;
-padding:16px;
+    max-width:980px;
+    margin:32px auto;
+    padding:16px;
 }
+
 .card{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:18px;
-box-shadow:var(--shadow);
-overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
 }
+
 .head{
-padding:24px 24px 12px;
-background:linear-gradient(180deg,#ffffff,#f9fbff);
-text-align:center; /* center title & subtitle */
+    padding:24px 24px 12px;
+    background:linear-gradient(180deg,#ffffff,#f9fbff);
+    text-align:center;
 }
+
 h1{
-margin:0 0 8px;
-font-size:30px;
+    margin:0 0 8px;
+    font-size:30px;
 }
+
 .subtitle{
-margin:0 0 0;
-font-size:16px;
-color:var(--muted);
-font-weight:400;
+    margin:0;
+    font-size:16px;
+    color:var(--muted);
+    font-weight:400;
 }
+
 .body{
-padding:24px;
+    padding:24px;
 }
+
 .grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:16px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
 }
+
 .row{
-display:grid;
-gap:8px;
+    display:grid;
+    gap:8px;
 }
+
 .full{
-grid-column:1/-1;
+    grid-column:1/-1;
 }
+
 label{
-font-weight:700;
-font-size:14px;
+    font-weight:700;
+    font-size:14px;
 }
-input[type=file],select,button{
-width:100%;
-padding:13px 14px;
-border-radius:12px;
-border:1px solid var(--line);
-font-size:16px;
-background:#fff;
+
+input,
+select,
+button,
+option{
+    font-family:"Inter", Arial, Helvetica, sans-serif;
 }
+
+input[type="file"],
 select{
-cursor:pointer;
+    width:100%;
+    padding:13px 14px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    font-size:16px;
+    background:#fff;
 }
-button{
-background:linear-gradient(180deg,var(--primary),var(--primary-2));
-color:#fff;
-border:none;
-font-weight:700;
-cursor:pointer;
+
+input[type="file"]{
+    color:var(--text);
 }
-button:disabled{
-opacity:.6;
-cursor:not-allowed;
+
+/* Choose File button */
+input[type="file"]::file-selector-button{
+    width:var(--choose-width);
+    height:var(--action-height);
+    box-sizing:border-box;
+
+    font-family:"Inter", Arial, Helvetica, sans-serif;
+    font-size:16px;
+    font-weight:400;
+    color:#fff;
+
+    background:linear-gradient(
+        180deg,
+        var(--choose-1),
+        var(--choose-2)
+    );
+
+    border:none;
+    border-radius:10px;
+    padding:0;
+    margin-right:10px;
+    cursor:pointer;
+    vertical-align:middle;
 }
+
+/* No visible hover colour change */
+input[type="file"]::file-selector-button:hover{
+    background:linear-gradient(
+        180deg,
+        var(--choose-1),
+        var(--choose-2)
+    );
+}
+
+select{
+    cursor:pointer;
+}
+
+select,
+select option{
+    font-family:"Inter", Arial, Helvetica, sans-serif;
+    font-size:16px;
+}
+
+/* Convert button uses the full horizontal width */
+#convertBtn{
+    width:100%;
+    height:var(--action-height);
+    box-sizing:border-box;
+
+    padding:0;
+    border-radius:10px;
+
+    background:linear-gradient(
+        180deg,
+        var(--primary),
+        var(--primary-2)
+    );
+
+    color:#fff;
+    border:none;
+    font-family:"Inter", Arial, Helvetica, sans-serif;
+    font-size:16px;
+    font-weight:400;
+    cursor:pointer;
+}
+
+#convertBtn:hover{
+    background:linear-gradient(
+        180deg,
+        var(--primary),
+        var(--primary-2)
+    );
+}
+
+#convertBtn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
 .meta{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px;
-margin:16px 0 0;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin:16px 0 0;
 }
+
 .tile{
-background:#fbfcff;
-border:1px solid var(--line);
-border-radius:14px;
-padding:14px;
-min-width:0;
+    background:#fbfcff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    min-width:0;
 }
+
 .tile b{
-display:block;
-font-size:13px;
-color:var(--muted);
-margin-bottom:6px;
+    display:block;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
 }
+
 .tile span,
 .fileValue{
-display:block;
-font-size:15px;
-line-height:1.45;
-overflow-wrap:anywhere;
-word-break:break-word;
-white-space:normal;
+    display:block;
+    font-size:15px;
+    line-height:1.45;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    white-space:normal;
 }
+
 .progressBox{
-margin-top:18px;
-padding:16px;
-border:1px solid var(--line);
-border-radius:14px;
-background:#fafcff;
+    margin-top:18px;
+    padding:16px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#fafcff;
 }
+
 .bar{
-height:18px;
-background:#e8eefb;
-border-radius:999px;
-overflow:hidden;
-margin:10px 0 6px;
+    height:18px;
+    background:#e8eefb;
+    border-radius:999px;
+    overflow:hidden;
+    margin:10px 0 6px;
 }
+
 .fill{
-height:100%;
-width:0;
-background:linear-gradient(90deg,#0b63f6,#5d92ff);
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#0b63f6,#5d92ff);
+    transition:width .25s ease;
 }
+
 .muted{
-color:var(--muted);
+    color:var(--muted);
 }
+
 .status{
-font-weight:700;
+    font-weight:700;
 }
-.ok{color:var(--ok)}
-.err{color:var(--err)}
+
+.ok{
+    color:var(--ok);
+}
+
+.err{
+    color:var(--err);
+}
+
 .pairList{
-margin-top:18px;
-border:1px solid var(--line);
-border-radius:14px;
-overflow:auto;
-max-height:260px;
+    margin-top:18px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:auto;
+    max-height:260px;
 }
+
 table{
-width:100%;
-border-collapse:collapse;
-font-size:14px;
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
 }
-th,td{
-padding:10px 12px;
-border-bottom:1px solid #edf1f7;
-text-align:left;
+
+th,
+td{
+    padding:10px 12px;
+    border-bottom:1px solid #edf1f7;
+    text-align:left;
 }
+
 th{
-position:sticky;
-top:0;
-background:#f9fbff;
+    position:sticky;
+    top:0;
+    background:#f9fbff;
 }
+
 .actions{
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-margin-top:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+    margin-top:16px;
 }
+
 .actions a{
-display:none;
-text-decoration:none;
-padding:12px 16px;
-border-radius:12px;
-background:#0f9d58;
-color:#fff;
-font-weight:700;
+    display:none;
+    align-self:flex-start;
+    width:auto;
+    text-decoration:none;
+    padding:12px 16px;
+    border-radius:12px;
+    background:#0f9d58;
+    color:#fff;
+    font-weight:700;
 }
+
 .dropzone{
-display:grid;
-place-items:center;
-min-height:150px;
-padding:20px;
-border:2px dashed #b7c7ea;
-border-radius:16px;
-background:linear-gradient(180deg,#fbfdff,#f4f8ff);
-text-align:center;
-transition:border-color .2s ease,background .2s ease,transform .2s ease;
+    display:grid;
+    place-items:center;
+    min-height:150px;
+    padding:20px;
+    border:2px dashed #b7c7ea;
+    border-radius:16px;
+    background:linear-gradient(180deg,#fbfdff,#f4f8ff);
+    text-align:center;
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease;
 }
+
 .dropzone:hover{
-border-color:#7ea1e8;
-background:#f7faff;
+    border-color:#7ea1e8;
+    background:#f7faff;
 }
+
 .dropzone.dragover{
-border-color:var(--primary);
-background:#eef4ff;
-transform:translateY(-1px);
+    border-color:var(--primary);
+    background:#eef4ff;
+    transform:translateY(-1px);
 }
+
 .dropzone strong{
-display:block;
-font-size:18px;
-margin-bottom:6px;
-overflow-wrap:anywhere;
-word-break:break-word;
+    display:block;
+    font-size:18px;
+    margin-bottom:6px;
+    overflow-wrap:anywhere;
+    word-break:break-word;
 }
+
 .dropzone .hint{
-color:var(--muted);
-font-size:14px;
-line-height:1.5;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
 }
+
 .dropzone .small{
-margin-top:8px;
-font-size:13px;
-color:var(--muted);
+    margin-top:8px;
+    font-size:13px;
+    color:var(--muted);
 }
+
 .filePicker{
-margin-top:14px;
+    margin-top:14px;
 }
+
 .feedbackLine{
-margin-top:14px;
-font-size:15px;
-color:var(--muted);
+    margin-top:14px;
+    font-size:15px;
+    color:var(--muted);
 }
+
+.feedbackLine a{
+    color:var(--primary);
+    text-decoration:none;
+}
+
+.feedbackLine a:hover{
+    text-decoration:underline;
+}
+
 @media (max-width:760px){
-.grid,.meta{
-grid-template-columns:1fr;
-}
-h1{
-font-size:25px;
-}
-.page{
-margin:12px auto;
-}
-.dropzone{
-min-height:132px;
-padding:16px;
-}
-.tile span,
-.fileValue{
-font-size:14px;
-}
+    .grid,
+    .meta{
+        grid-template-columns:1fr;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+    .page{
+        margin:12px auto;
+    }
+
+    .dropzone{
+        min-height:132px;
+        padding:16px;
+    }
+
+    .tile span,
+    .fileValue{
+        font-size:14px;
+    }
+
+    input[type="file"]::file-selector-button{
+        width:var(--choose-width);
+        height:var(--action-height);
+        font-size:14px;
+    }
+
+    #convertBtn{
+        width:100%;
+        height:var(--action-height);
+        font-size:14px;
+    }
 }
 </style>
 </head>
+
 <body>
 <div class="page">
-<div class="card">
-<div class="head">
-<h1>Tamil DOCX Font Converter</h1>
-<p class="subtitle">Convert only the Tamil text in MS-Word documents and retain the English text</p>
-</div>
-<div class="body">
-<div class="grid">
-<div class="row full">
-<label for="docxFile">Choose DOCX file</label>
-<div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose or drop a DOCX file">
-<div>
-<strong>Drag and drop DOCX here</strong>
-<div class="hint">Drop your file into this area or use the file picker below.</div>
-<div class="small">Only .docx files are accepted.</div>
-</div>
-</div>
-<input id="docxFile" class="filePicker" type="file" accept=".docx">
-</div>
+    <div class="card">
 
-<div class="row">
-<label for="sourceFont">Source Tamil font</label>
-<select id="sourceFont">
-{% for font in fonts %}
-<option value="{{ font }}" {% if font == 'unicode' %}selected{% endif %}>{{ font }}</option>
-{% endfor %}
-</select>
-</div>
+        <div class="head">
+            <h1>Tamil DOCX Font Converter</h1>
 
-<div class="row">
-<label for="targetFont">Target Tamil font</label>
-<select id="targetFont">
-{% for font in fonts %}
-<option value="{{ font }}" {% if font == 'bamini' %}selected{% endif %}>{{ font }}</option>
-{% endfor %}
-</select>
-</div>
-</div>
+            <p class="subtitle">
+                Convert only the Tamil text in MS-Word documents and retain the English text
+            </p>
+        </div>
 
-<div class="meta">
-<div class="tile">
-<b>Chosen file</b>
-<span id="fileName" class="fileValue">None</span>
-</div>
-<div class="tile">
-<b>File size</b>
-<span id="fileSize">-</span>
-</div>
-<div class="tile">
-<b>Total mappings</b>
-<span id="mapCount">{{ mapping_count }}</span>
-</div>
-<div class="tile">
-<b>Status</b>
-<span id="statusLabel">Waiting</span>
-</div>
-</div>
+        <div class="body">
+            <div class="grid">
 
-<div class="actions">
-<button id="convertBtn">Convert</button>
-<a id="downloadBtn" href="#">Download converted DOCX</a>
-</div>
+                <div class="row full">
+                    <label for="docxFile">Choose DOCX file</label>
 
-<div class="progressBox">
-<div class="status" id="statusText">Ready</div>
-<div class="bar"><div class="fill" id="fill"></div></div>
-<div class="muted"><span id="percent">0%</span> · <span id="detail">No conversion started.</span></div>
-</div>
+                    <div
+                        id="dropzone"
+                        class="dropzone"
+                        tabindex="0"
+                        role="button"
+                        aria-label="Choose or drop a DOCX file"
+                    >
+                        <div>
+                            <strong>Drag and drop DOCX here</strong>
 
-<!-- Feedback line after the Ready block -->
-<div class="feedbackLine">
-For any Feedback and Queries Whatsapp: 8015233838 or mail: vigneshwaran29031992@gmail.com
-</div>
+                            <div class="hint">
+                                Drop your file into this area or use the file picker below.
+                            </div>
 
-<div class="pairList">
-<table>
-<thead>
-<tr><th>Source</th><th>Target</th><th>Entries</th></tr>
-</thead>
-<tbody id="pairBody">
-{% for p in pairs %}
-<tr><td>{{ p.source }}</td><td>{{ p.target }}</td><td>{{ p.count }}</td></tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
-</div>
-</div>
+                            <div class="small">
+                                Only .docx files are accepted.
+                            </div>
+                        </div>
+                    </div>
+
+                    <input
+                        id="docxFile"
+                        class="filePicker"
+                        type="file"
+                        accept=".docx"
+                    >
+                </div>
+
+                <div class="row">
+                    <label for="sourceFont">Source Tamil font</label>
+
+                    <select id="sourceFont">
+                        {% for font in fonts %}
+                        <option
+                            value="{{ font }}"
+                            {% if font == 'unicode' %}selected{% endif %}
+                        >
+                            {{ font }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label for="targetFont">Target Tamil font</label>
+
+                    <select id="targetFont">
+                        {% for font in fonts %}
+                        <option
+                            value="{{ font }}"
+                            {% if font == 'bamini' %}selected{% endif %}
+                        >
+                            {{ font }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="meta">
+                <div class="tile">
+                    <b>Chosen file</b>
+                    <span id="fileName" class="fileValue">None</span>
+                </div>
+
+                <div class="tile">
+                    <b>File size</b>
+                    <span id="fileSize">-</span>
+                </div>
+
+                <div class="tile">
+                    <b>Total mappings</b>
+                    <span id="mapCount">{{ mapping_count }}</span>
+                </div>
+
+                <div class="tile">
+                    <b>Status</b>
+                    <span id="statusLabel">Waiting</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="convertBtn" type="button">
+                    Convert
+                </button>
+
+                <a id="downloadBtn" href="#">
+                    Download converted DOCX
+                </a>
+            </div>
+
+            <div class="progressBox">
+                <div class="status" id="statusText">Ready</div>
+
+                <div class="bar">
+                    <div class="fill" id="fill"></div>
+                </div>
+
+                <div class="muted">
+                    <span id="percent">0%</span>
+                    ·
+                    <span id="detail">No conversion started.</span>
+                </div>
+            </div>
+
+            <div class="feedbackLine">
+                For any Feedback and Queries WhatsApp: 8015233838 or mail: vigneshwaran29031992@gmail.com
+            </div>
+
+            <div class="pairList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Target</th>
+                            <th>Entries</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="pairBody">
+                        {% for p in pairs %}
+                        <tr>
+                            <td>{{ p.source }}</td>
+                            <td>{{ p.target }}</td>
+                            <td>{{ p.count }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -365,139 +592,231 @@ const downloadBtn = document.getElementById('downloadBtn');
 const pairBody = document.getElementById('pairBody');
 const dropzone = document.getElementById('dropzone');
 
-function setProgress(p, label, more, klass=''){
-fill.style.width = p + '%';
-percent.textContent = p + '%';
-statusLabel.textContent = label;
-statusText.textContent = label;
-statusText.className = 'status ' + klass;
-detail.textContent = more;
+function setProgress(p, label, more, klass = ''){
+    fill.style.width = p + '%';
+    percent.textContent = p + '%';
+    statusLabel.textContent = label;
+    statusText.textContent = label;
+    statusText.className = 'status ' + klass;
+    detail.textContent = more;
 }
 
 function formatFileSize(bytes){
-if(bytes === 0) return '0 B';
-const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-const i = Math.floor(Math.log(bytes) / Math.log(1024));
-return (bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 2) + ' ' + units[i];
+    if(bytes === 0){
+        return '0 B';
+    }
+
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+    return (
+        bytes / Math.pow(1024, i)
+    ).toFixed(i === 0 ? 0 : 2) + ' ' + units[i];
 }
 
 function updateSelectedFile(){
-const f = docxFile.files[0];
-fileName.textContent = f ? f.name : 'None';
-fileSize.textContent = f ? formatFileSize(f.size) : '-';
-dropzone.querySelector('strong').textContent = f ? `Selected: ${f.name}` : 'Drag and drop DOCX here';
+    const file = docxFile.files[0];
+
+    fileName.textContent = file ? file.name : 'None';
+    fileSize.textContent = file ? formatFileSize(file.size) : '-';
+
+    dropzone.querySelector('strong').textContent = file
+        ? `Selected: ${file.name}`
+        : 'Drag and drop DOCX here';
 }
 
 function setFiles(files){
-if(!files || !files.length) return;
-const file = files[0];
-if(!file.name.toLowerCase().endsWith('.docx')){
-setProgress(0, 'Error', 'Only .docx files are accepted.', 'err');
-return;
-}
-const dt = new DataTransfer();
-dt.items.add(file);
-docxFile.files = dt.files;
-updateSelectedFile();
+    if(!files || !files.length){
+        return;
+    }
+
+    const file = files[0];
+
+    if(!file.name.toLowerCase().endsWith('.docx')){
+        setProgress(
+            0,
+            'Error',
+            'Only .docx files are accepted.',
+            'err'
+        );
+        return;
+    }
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    docxFile.files = dataTransfer.files;
+
+    updateSelectedFile();
 }
 
 docxFile.addEventListener('change', updateSelectedFile);
 
-['dragenter','dragover'].forEach(evt => dropzone.addEventListener(evt, e => {
-e.preventDefault();
-dropzone.classList.add('dragover');
-}));
+['dragenter', 'dragover'].forEach(eventName => {
+    dropzone.addEventListener(eventName, event => {
+        event.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+});
 
-['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, e => {
-e.preventDefault();
-dropzone.classList.remove('dragover');
-}));
+['dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, event => {
+        event.preventDefault();
+        dropzone.classList.remove('dragover');
+    });
+});
 
-dropzone.addEventListener('drop', e => setFiles(e.dataTransfer.files));
-dropzone.addEventListener('click', () => docxFile.click());
+dropzone.addEventListener('drop', event => {
+    setFiles(event.dataTransfer.files);
+});
 
-dropzone.addEventListener('keydown', e => {
-if(e.key === 'Enter' || e.key === ' '){
-e.preventDefault();
-docxFile.click();
-}
+dropzone.addEventListener('click', () => {
+    docxFile.click();
+});
+
+dropzone.addEventListener('keydown', event => {
+    if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        docxFile.click();
+    }
 });
 
 async function loadMeta(){
-const res = await fetch('/api/meta');
-const data = await res.json();
-const pairs = data.pairs || [];
-const totalMappings = Number.isFinite(Number(data.mappingCount))
-? Number(data.mappingCount)
-: pairs.reduce((sum, p) => sum + (Number(p.count) || 0), 0);
+    const response = await fetch('/api/meta');
+    const data = await response.json();
 
-mapCount.textContent = totalMappings.toLocaleString();
-pairBody.innerHTML = pairs.map(p => `<tr><td>${p.source}</td><td>${p.target}</td><td>${Number(p.count || 0).toLocaleString()}</td></tr>`).join('');
+    const pairs = data.pairs || [];
 
-const fonts = data.fonts || [];
-for(const sel of [sourceFont, targetFont]){
-const current = sel.value;
-sel.innerHTML = fonts.map(f => `<option value="${f}">${f}</option>`).join('');
-if(fonts.includes(current)) sel.value = current;
+    const totalMappings = Number.isFinite(Number(data.mappingCount))
+        ? Number(data.mappingCount)
+        : pairs.reduce(
+            (sum, pair) => sum + (Number(pair.count) || 0),
+            0
+        );
+
+    mapCount.textContent = totalMappings.toLocaleString();
+
+    pairBody.innerHTML = pairs.map(pair => `
+        <tr>
+            <td>${pair.source}</td>
+            <td>${pair.target}</td>
+            <td>${Number(pair.count || 0).toLocaleString()}</td>
+        </tr>
+    `).join('');
+
+    const fonts = data.fonts || [];
+
+    for(const select of [sourceFont, targetFont]){
+        const currentValue = select.value;
+
+        select.innerHTML = fonts.map(font => `
+            <option value="${font}">${font}</option>
+        `).join('');
+
+        if(fonts.includes(currentValue)){
+            select.value = currentValue;
+        }
+    }
+
+    if(fonts.includes('unicode')){
+        sourceFont.value = 'unicode';
+    }
+
+    if(fonts.includes('bamini')){
+        targetFont.value = 'bamini';
+    }
 }
 
-if(fonts.includes('unicode')) sourceFont.value = 'unicode';
-if(fonts.includes('bamini')) targetFont.value = 'bamini';
-}
+convertBtn.addEventListener('click', async () => {
+    if(!docxFile.files.length){
+        setProgress(
+            0,
+            'Error',
+            'Choose a DOCX file first.',
+            'err'
+        );
+        return;
+    }
 
-convertBtn.addEventListener('click', async ()=>{
-if(!docxFile.files.length){
-setProgress(0, 'Error', 'Choose a DOCX file first.', 'err');
-return;
-}
-if(sourceFont.value === targetFont.value){
-setProgress(0, 'Error', 'Source and target fonts must be different.', 'err');
-return;
-}
+    if(sourceFont.value === targetFont.value){
+        setProgress(
+            0,
+            'Error',
+            'Source and target fonts must be different.',
+            'err'
+        );
+        return;
+    }
 
-const fd = new FormData();
-fd.append('docx', docxFile.files[0]);
-fd.append('source_font', sourceFont.value);
-fd.append('target_font', targetFont.value);
+    const formData = new FormData();
 
-convertBtn.disabled = true;
-downloadBtn.style.display = 'none';
+    formData.append('docx', docxFile.files[0]);
+    formData.append('source_font', sourceFont.value);
+    formData.append('target_font', targetFont.value);
 
-const startTime = performance.now();
-setProgress(15, 'Uploading', 'Sending document to local converter.');
+    convertBtn.disabled = true;
+    downloadBtn.style.display = 'none';
 
-try{
-const fakeSteps = [35, 55, 75];
-let i = 0;
-const ticker = setInterval(()=>{
-if(i < fakeSteps.length){
-setProgress(fakeSteps[i], 'Converting', 'Scanning body, tables, headers, footers, and other XML parts.');
-i++;
-}
-}, 400);
+    const startTime = performance.now();
 
-const res = await fetch('/api/convert', {method:'POST', body:fd});
-clearInterval(ticker);
+    setProgress(
+        15,
+        'Uploading',
+        'Sending document to local converter.'
+    );
 
-const data = await res.json();
-if(!res.ok || !data.ok) throw new Error(data.error || 'Conversion failed');
+    try{
+        const fakeSteps = [35, 55, 75];
+        let stepIndex = 0;
 
-const elapsedSeconds = ((performance.now() - startTime) / 1000).toFixed(2);
+        const ticker = setInterval(() => {
+            if(stepIndex < fakeSteps.length){
+                setProgress(
+                    fakeSteps[stepIndex],
+                    'Converting',
+                    'Scanning body, tables, headers, footers, and other XML parts.'
+                );
 
-setProgress(
-100,
-'Completed',
-`${data.runs} run(s) converted in ${elapsedSeconds}(s), ${data.chars} character(s) processed.`,
-'ok'
-);
+                stepIndex++;
+            }
+        }, 400);
 
-downloadBtn.href = data.download;
-downloadBtn.style.display = 'inline-block';
-}catch(err){
-setProgress(0, 'Error', err.message, 'err');
-}finally{
-convertBtn.disabled = false;
-}
+        const response = await fetch('/api/convert', {
+            method:'POST',
+            body:formData
+        });
+
+        clearInterval(ticker);
+
+        const data = await response.json();
+
+        if(!response.ok || !data.ok){
+            throw new Error(data.error || 'Conversion failed');
+        }
+
+        const elapsedSeconds = (
+            (performance.now() - startTime) / 1000
+        ).toFixed(2);
+
+        setProgress(
+            100,
+            'Completed',
+            `${data.runs} run(s) converted in ${elapsedSeconds} second(s), ${data.chars} character(s) processed.`,
+            'ok'
+        );
+
+        downloadBtn.href = data.download;
+        downloadBtn.style.display = 'inline-block';
+
+    }catch(error){
+        setProgress(
+            0,
+            'Error',
+            error.message,
+            'err'
+        );
+    }finally{
+        convertBtn.disabled = false;
+    }
 });
 
 loadMeta();
