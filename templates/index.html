@@ -27,7 +27,6 @@
     --err:#c62828;
     --shadow:0 14px 40px rgba(9,30,66,.08);
 
-    /* Choose File button is slightly shorter */
     --choose-width:125px;
     --action-height:44px;
 }
@@ -120,7 +119,6 @@ input[type="file"]{
     color:var(--text);
 }
 
-/* Choose File button */
 input[type="file"]::file-selector-button{
     width:var(--choose-width);
     height:var(--action-height);
@@ -145,7 +143,6 @@ input[type="file"]::file-selector-button{
     vertical-align:middle;
 }
 
-/* No visible hover colour change */
 input[type="file"]::file-selector-button:hover{
     background:linear-gradient(
         180deg,
@@ -164,7 +161,6 @@ select option{
     font-size:16px;
 }
 
-/* Convert button uses the full horizontal width */
 #convertBtn{
     width:100%;
     height:var(--action-height);
@@ -465,6 +461,7 @@ th{
                         class="filePicker"
                         type="file"
                         accept=".docx"
+                        autocomplete="off"
                     >
                 </div>
 
@@ -547,7 +544,11 @@ th{
             </div>
 
             <div class="feedbackLine">
-                For any Feedback and Queries WhatsApp: 8015233838 or mail: vigneshwaran29031992@gmail.com
+                For any Feedback and Queries WhatsApp:
+                8015233838 or mail:
+                <a href="mailto:vigneshwaran29031992@gmail.com">
+                    vigneshwaran29031992@gmail.com
+                </a>
             </div>
 
             <div class="pairList">
@@ -612,6 +613,20 @@ function formatFileSize(bytes){
     return (
         bytes / Math.pow(1024, i)
     ).toFixed(i === 0 ? 0 : 2) + ' ' + units[i];
+}
+
+/*
+    This function clears the file picker and the displayed filename.
+    It is called only when the page opens or is reopened.
+*/
+function resetFilePicker(){
+    docxFile.value = '';
+
+    fileName.textContent = 'None';
+    fileSize.textContent = '-';
+
+    dropzone.querySelector('strong').textContent =
+        'Drag and drop DOCX here';
 }
 
 function updateSelectedFile(){
@@ -818,6 +833,14 @@ convertBtn.addEventListener('click', async () => {
         convertBtn.disabled = false;
     }
 });
+
+/*
+    Clear any old browser-restored filename
+    when the page opens or is reopened.
+*/
+resetFilePicker();
+
+window.addEventListener('pageshow', resetFilePicker);
 
 loadMeta();
 </script>
