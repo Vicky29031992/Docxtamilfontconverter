@@ -345,4 +345,5 @@ const stmzh_adobe_new_to_unicode = {
 "": "ா",
 "": "ெ",
 "": "ே",
+"": "ை",
 };
