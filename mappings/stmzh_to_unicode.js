@@ -1,4 +1,4 @@
-const stmzh_adobe_new_to_unicode = {
+const stmzh_to_unicode = {
 "": "அ",
 "": "ஆ",
 "": "இ",
