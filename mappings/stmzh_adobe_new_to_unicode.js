@@ -338,4 +338,5 @@ const stmzh_adobe_new_to_unicode = {
 "": "9",
 "": "=",
 "": "?",
+"": " ",
 };
