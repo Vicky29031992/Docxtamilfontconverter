@@ -68,11 +68,7 @@ DEFAULT_FONT_CONFIG = {
         "doc_font": "divya",
         "aliases": ["divya"]
     },
-    "stmzh_adobe_old": {
-        "doc_font": "STMZH - 076",
-        "aliases": ["STMZH"]
-    },
-    "stmzh_adobe_new": {
+    "stmzh": {
         "doc_font": "STMZH - 076",
         "aliases": ["STMZH"]
     }
